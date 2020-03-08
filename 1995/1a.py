@@ -1,11 +1,12 @@
-import math
+print("Patrick Connolly - Eton College")
 
 input = int(input("Enter a number: "))
-def pallindrome(num):
+
+def palindrome(num):
     for i in range(num+1,10**20):
-        if i == int(str(i)[::-1]):
+        if str(i) == str(i)[::-1]:
             print(i)
             return i
 
-pallindrome(input)
+palindrome(input)
 

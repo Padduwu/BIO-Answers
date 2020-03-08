@@ -1,4 +1,6 @@
-print("Patrick Connolly - Eton College")
+print("Patrick Connolly - Eton College - Age 16\n")
+print("British Informatics Olympiad 2019 - Question 1c\n")
+print("How many integers are there, between 1 and 99999 inclusive, that are not the sum of two palindromic numbers?\n")
 
 palindromes = [False for _ in range(99999)]
 numbers = [False for _ in range(99999)]

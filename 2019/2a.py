@@ -18,23 +18,29 @@ end = False
 def is_finished():
     if len(moves) >= numOfMoves:
         return True
+    else:
+        return False
 
 def is_stuck():
     if len(attempted) >= 3:
         return True
+    else:
+        return False
 
 def is_done():
-    if is_finished and is_stuck:
-        print("AYAYA")
+    if is_finished() or is_stuck():
         return True
-    return False
+    else:
+        return False
 
 def turn_left(direction):
     index = directions.index(direction)
     if index != 0:
-        return directions[index-1]
+        direction = directions[index-1]
+        return direction
     else:
-        return directions[3]
+        direction = directions[3]
+        return direction
 
 def turn_right(direction):
     index = directions.index(direction)
@@ -45,11 +51,12 @@ def turn_right(direction):
         direction = directions[0]
         return direction
 
-def set_new_pos(instruction, direction):
+def set_new_pos(instruction):
+    global direction
     if instruction == "L":
-        turn_left(direction)
+        direction = turn_left(direction)
     elif instruction == "R":
-        turn_right(direction)
+        direction = turn_right(direction)
     if direction == "N":
         return [pos[0], pos[1] + 1]
     elif direction == "E":
@@ -67,37 +74,41 @@ def try_next_instruction(instruction):
     else: 
         return "F"
 
-def move(instruction, direction, pos):
-    newPos = set_new_pos(instruction, direction)
+def move(instruction, direction):
+    global pos
+    newPos = set_new_pos(instruction)
     trail.append(pos)
     if newPos not in trail:
         pos = newPos
-        print(pos)
+        print("Position:", pos)
+        print("Facing:", direction)
         moves.append(pos)
-        if is_done:
-            return
     else:
         attempted.append(instruction)
-        try_next_instruction(instruction)
-        if is_done:
-            return 
+        if is_stuck():
+            print("Stuck. Ending...")
+            return
+        move(try_next_instruction(instruction), direction)
+
 
 def path():
-    for char in instructions:       
-        if char == "F":
-            print("Moving Forwards")
-            move("F", direction, pos)
-        elif char == "L":
-            print("Moving Left")
-            move("L", direction, pos)
-        elif char == "R":
-            print("Moving Right")
-            move("R", direction, pos)
-        else:
-            print("Invalid instuctions")
-        if len(trail) > maxTrail:
-            trail.pop(0)
-
+    while True:
+        for char in instructions: 
+            if is_done():
+                return
+            if char == "F":
+                print("Moving Forwards")
+                move("F", direction)
+            elif char == "L":
+                print("Moving Left")
+                move("L", direction)
+            elif char == "R":
+                print("Moving Right")
+                move("R", direction)
+            else:
+                print("Invalid instuctions")
+            if len(trail) > maxTrail:
+                trail.pop(0)
 
 path()
                 
